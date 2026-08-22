@@ -29,7 +29,7 @@ def main():
     configPath = args.config if args.config is not None else defaultConfigPath
 
     # Open the Configuration
-    fp = open("./config.json", "r")
+    fp = open(configPath, "r")
     jsonData = json.load(fp)
     
     # ensure the desired command is configured
