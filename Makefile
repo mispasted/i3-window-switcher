@@ -2,4 +2,4 @@ build:
 	nix-build -E 'let pkgs = import <nixpkgs> {}; in pkgs.callPackage ./derivation.nix {}'
 
 run: 
-	exec "./venv/bin/python3" "./i3-window-switcher.py" "$@"
+	exec venv/bin/python3 i3-window-switcher.py kitty
