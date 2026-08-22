@@ -1,0 +1,27 @@
+{
+  "firefox": {
+    "command": ["/home/mispasted/.nix-profile/bin/firefox"],
+    "class": "^firefox$"
+  },
+  "kitty": {
+    "command": ["/home/mispasted/.nix-profile/bin/kitty"],
+    "class": "^kitty$"
+  },
+  "nvim": {
+    "command": [
+      "/home/mispasted/.nix-profile/bin/kitty",
+      "--class",
+      "dedicated-nvim",
+      "/home/mispasted/.nix-profile/bin/nvim"
+    ],
+    "class": "^dedicated-nvim$"
+  },
+  "obsidian": {
+    "command": ["/home/mispasted/.nix-profile/bin/obsidian"],
+    "class": "^obsidian$"
+  },
+  "vscode": {
+    "command": ["/home/mispasted/.nix-profile/bin/code"],
+    "class": "^code$"
+  }
+}
