@@ -59,19 +59,15 @@ def main():
         if re.fullmatch(windowClass, leaf.app_id):
             existingWindows.append(leaf);
 
-     
+    focusNext = False 
     if (len(existingWindows) > 0):
         if (currentWindow.app_id == windowClass):
             for window in existingWindows:
                 if (currentWindow == window):
-    
-                    # focus next window in tree
-                    if (i == len(existingWindows) - 1):
-                        index = 0
-                    else:
-                        index = i + 1
-                    existingWindows[index].command("focus child")
-    
+                    focusNext = True;
+                    continue
+                if (focusNext):
+                    window.command("focus child")
                     break
         else: # currentWindow.window_class != windowClass
             existingWindows[0].command("focus child")
