@@ -3,6 +3,7 @@ import json
 import argparse
 import sys
 import shlex
+import re
 from pathlib import Path
 
 
@@ -52,23 +53,28 @@ def main():
     tree = i3.get_tree()
     
     currentWindow = tree.find_focused()
-    windowsOfClass = tree.find_classed(windowClass)
-    
-    if (len(windowsOfClass) > 0):
-        if (currentWindow.window_class == windowClass):
-            for i in range(0, len(windowsOfClass)):
-                if (currentWindow == windowsOfClass[i]):
+    classExists = False
+    existingWindows = [];
+    for leaf in tree.leaves():
+        if re.fullmatch(windowClass, leaf.app_id):
+            existingWindows.append(leaf);
+
+     
+    if (len(existingWindows) > 0):
+        if (currentWindow.app_id == windowClass):
+            for window in existingWindows:
+                if (currentWindow == window):
     
                     # focus next window in tree
-                    if (i == len(windowsOfClass) - 1):
+                    if (i == len(existingWindows) - 1):
                         index = 0
                     else:
                         index = i + 1
-                    windowsOfClass[index].command("focus")
+                    existingWindows[index].command("focus child")
     
                     break
         else: # currentWindow.window_class != windowClass
-            windowsOfClass[0].command("focus")
+            existingWindows[0].command("focus child")
     
     else: # currentWindow !exist
         reply = i3.command(f"exec --no-startup-id {startCommand}")

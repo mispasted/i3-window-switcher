@@ -2,4 +2,6 @@ build:
 	nix-build -E 'let pkgs = import <nixpkgs> {}; in pkgs.callPackage ./derivation.nix {}'
 
 run: 
-	exec venv/bin/python3 i3-window-switcher.py kitty
+	./result/bin/i3-window-switcher -c ./config.json firefox
+
+activate: build run

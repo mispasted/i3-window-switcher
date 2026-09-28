@@ -18,7 +18,7 @@
   },
   "obsidian": {
     "command": ["/home/mispasted/.nix-profile/bin/obsidian"],
-    "class": "^obsidian$"
+    "class": "^md.Obsidian$"
   },
   "vscode": {
     "command": ["/home/mispasted/.nix-profile/bin/code"],
