@@ -56,7 +56,7 @@ def main():
     classExists = False
     existingWindows = [];
     for leaf in tree.leaves():
-        if re.fullmatch(windowClass, leaf.app_id):
+        if leaf.app_id and re.fullmatch(windowClass, leaf.app_id):
             existingWindows.append(leaf);
 
     focusNext = False 
