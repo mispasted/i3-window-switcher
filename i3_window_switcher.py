@@ -6,8 +6,20 @@ import shlex
 import re
 from pathlib import Path
 
+def getXwaylandClass(leaf):
+    windowProperties = leaf.ipc_data.get("window_properties")
+    # Not all leaves have windowProperties (Only xwayland leaves)
+    if(windowProperties):
+        return windowProperties.get("class")
+    else:
+        return None
+
+def getWaylandAppId(leaf):
+    # All leaves have app_id
+    return leaf.app_id
 
 def main():
+
     defaultConfigPath = str(Path.home() / ".config" / "i3-window-switcher" / "config.json")
 
     # Parse the argument.
@@ -51,17 +63,35 @@ def main():
     
     i3 = Connection()
     tree = i3.get_tree()
-    
+
+    # Exit if this is an i3 session
+    if (i3.get_version().ipc_data.get("variant") != 'sway'):
+        i3.command(
+            f"exec --no-startup-id i3-nag -t warning -m 'i3-window-switcher is not actually written for i3! (Its for sway atm)')"
+        )
+        sys.exit(1)
+
+
+    getClass = getWaylandAppId # Start by looking for App_id
     currentWindow = tree.find_focused()
-    classExists = False
     existingWindows = [];
     for leaf in tree.leaves():
-        if leaf.app_id and re.fullmatch(windowClass, leaf.app_id):
+        leafClass = getClass(leaf)
+        # "leafClass and" prevents an error if leafClass is null
+        if leafClass and re.fullmatch(windowClass, getClass(leaf)):
             existingWindows.append(leaf);
+
+    # If nothing can be found via App_id check for an Xwayland class
+    if(not existingWindows):
+        getClass = getXwaylandClass # Change get function to Xwayland variety
+        for leaf in tree.leaves():
+            leafClass = getClass(leaf)
+            if leafClass and re.fullmatch(windowClass, getClass(leaf)):
+                existingWindows.append(leaf);
 
     focusNext = False 
     if (len(existingWindows) > 0):
-        if (currentWindow.app_id == windowClass):
+        if (getClass(currentWindow) == windowClass):
             for window in existingWindows:
                 if (currentWindow == window):
                     focusNext = True;

@@ -1,7 +1,7 @@
 {
-  "firefox": {
-    "command": ["/home/mispasted/.nix-profile/bin/firefox"],
-    "class": "^firefox$"
+  "browser": {
+    "command": ["/home/mispasted/.nix-profile/bin/zen"],
+    "class": "^zen$"
   },
   "kitty": {
     "command": ["/home/mispasted/.nix-profile/bin/kitty"],
